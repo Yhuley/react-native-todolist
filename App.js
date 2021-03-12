@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, FlatList} from 'react-native';
+import { StyleSheet, View, FlatList, Alert} from 'react-native';
 import Header from "./components/Header";
 import ToDoItem from "./components/ToDoItem";
 import CreateTodo from "./components/CreateTodo";
@@ -18,6 +18,8 @@ export default function App() {
     const addTodo = text => {
         if(text.trim().length > 0){
             setTodos(prevTodos => [{key: Date.now().toString(), text: text}, ...prevTodos])
+        } else {
+            Alert.alert('OOPS!', 'the todo can`t be empty', [{text: 'Understood'}])
         }
     }
     return (
