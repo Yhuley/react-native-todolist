@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, FlatList, Alert} from 'react-native';
+import {StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Header from "./components/Header";
 import ToDoItem from "./components/ToDoItem";
 import CreateTodo from "./components/CreateTodo";
@@ -16,28 +16,30 @@ export default function App() {
         setTodos(prevTodos => prevTodos.filter(todo => todo.key !== key))
     }
     const addTodo = text => {
-        if(text.trim().length > 0){
+        if (text.trim().length > 0) {
             setTodos(prevTodos => [{key: Date.now().toString(), text: text}, ...prevTodos])
         } else {
             Alert.alert('OOPS!', 'the todo can`t be empty', [{text: 'Understood'}])
         }
     }
     return (
-        <View style={styles.container}>
-            <Header/>
-            <View style={styles.content}>
-                <CreateTodo addItem={addTodo}/>
-                <View style={styles.list}>
-                    <FlatList
-                        data={todos}
-                        renderItem ={({item}) => (
-                            <ToDoItem item={item} deleteItem={() => deleteTodo(item.key)}/>
-                        )}
-                    />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.container}>
+                <Header/>
+                <View style={styles.content}>
+                    <CreateTodo addItem={addTodo}/>
+                    <View style={styles.list}>
+                        <FlatList
+                            data={todos}
+                            renderItem={({item}) => (
+                                <ToDoItem item={item} deleteItem={() => deleteTodo(item.key)}/>
+                            )}
+                        />
+                    </View>
                 </View>
             </View>
-        </View>
-    );
+        </TouchableWithoutFeedback>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -48,7 +50,5 @@ const styles = StyleSheet.create({
     content: {
         padding: 15
     },
-    list: {
-
-    }
+    list: {}
 });
